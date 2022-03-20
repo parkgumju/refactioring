@@ -1,5 +1,8 @@
 function statement(invoice, plays) {
+  return renderPlainText(invoice, plays)
+}
 
+function renderPlainText(invoice, plays) {
   let result = `청구 내역 (고객명: ${invoice.customer})\n`
 
   for (let perf of invoice.performances) {
@@ -11,7 +14,7 @@ function statement(invoice, plays) {
   return result
 }
 
-function totalAmount(invoice){
+function totalAmount(invoice) {
   let result = 0
   for (let perf of invoice.performances) {
     result += amountFor(perf)
@@ -19,7 +22,8 @@ function totalAmount(invoice){
 
   return result;
 }
-function totalVolumeCredits(invoice){
+
+function totalVolumeCredits(invoice) {
   let volumeCredits = 0;
   for (let perf of invoice.performances) {
     volumeCredits += volumeCreditsFor(perf);
@@ -27,25 +31,26 @@ function totalVolumeCredits(invoice){
 
   return volumeCredits;
 }
+
 function usd(aNumber) {
-  return  new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2,
-  }).format(aNumber/ 100);
+  }).format(aNumber / 100);
 }
 
-function volumeCreditsFor(perf){
+function volumeCreditsFor(perf) {
   let result = 0;
   result += Math.max(perf.audience - 30, 0)
-  if (platFor(perf.type === 'comedy')){
+  if (platFor(perf.type === 'comedy')) {
     result += Math.floor(perf.audience / 5);
   }
   return result;
 }
 
-function platFor(aPerformance){
-  return  plays[aPerformance.playID];
+function platFor(aPerformance) {
+  return plays[aPerformance.playID];
 }
 
 function amountFor(aPerformance) {
@@ -89,9 +94,9 @@ let invoices = [
 ]
 
 let plays = {
-  "hamlet": { "name": "Hamlet", "type": "tragedy" },
-  "as-like": { "name": "As You Like It", "type": "comedy" },
-  "othello": { "name": "Othello", "type": "tragedy" }
+  "hamlet": {"name": "Hamlet", "type": "tragedy"},
+  "as-like": {"name": "As You Like It", "type": "comedy"},
+  "othello": {"name": "Othello", "type": "tragedy"}
 }
 invoices.forEach(invoice => {
   console.log(statement(invoice, plays))
