@@ -1,17 +1,19 @@
 function statement(invoice, plays) {
   const statementData = {};
-  return renderPlainText(statementData, invoice, plays)
+  statementData.customer = invoice.customer;
+  statementData.performances = invoice.performances;
+  return renderPlainText(statementData, plays)
 }
 
-function renderPlainText(data, invoice, plays) {
-  let result = `청구 내역 (고객명: ${invoice.customer})\n`
+function renderPlainText(data, plays) {
+  let result = `청구 내역 (고객명: ${data.customer})\n`
 
-  for (let perf of invoice.performances) {
+  for (let perf of data.performances) {
     result += `  ${platFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`
   }
 
-  result += `총액: ${usd(totalAmount(invoice))}\n`
-  result += `적립 포인트: ${totalVolumeCredits(invoice)}점\n`
+  result += `총액: ${usd(totalAmount(data))}\n`
+  result += `적립 포인트: ${totalVolumeCredits(data)}점\n`
   return result
 }
 
